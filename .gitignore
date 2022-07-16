@@ -1,5 +1,15 @@
+#IDE
+.idea
+
+#Maven
+.mvn
+mvn
+mvnw.cmd
+mvnw
+
 # Compiled class file
 *.class
+target
 
 # Log file
 *.log
