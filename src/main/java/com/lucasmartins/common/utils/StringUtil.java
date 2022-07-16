@@ -86,7 +86,7 @@ public class StringUtil {
             return "";
         }
         value = value.trim();
-        value = value.replaceAll("[^\\p{L}\\p{N}]", " ").replaceAll("[ ]+", "-");
+        value = value.replaceAll("[^\\p{L}\\p{N}]", " ").replace(" ", "-");
         value = Normalizer.normalize(value, Normalizer.Form.NFD);
         value = value.replaceAll("[^\\p{ASCII}]", "");
 

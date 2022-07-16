@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
@@ -73,7 +72,7 @@ public class Utils {
 
     public static String numbers(String str) {
         String n = nvl(str, "");
-        return n.replaceAll("[^0-9]", "");
+        return n.replaceAll("\\D", "");
     }
 
     public static String removeAcentos(String s) {
@@ -109,7 +108,7 @@ public class Utils {
 
         return successMath.stream()
                 .map(item -> item.replaceAll("[^a-zA-Z0-9]", ""))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static String objectToJson(Object obj) {

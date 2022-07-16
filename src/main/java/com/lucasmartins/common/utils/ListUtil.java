@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -102,7 +101,7 @@ public class ListUtil {
         HashSet<U> existing = new HashSet<>(lista.size());
         return first(stream(lista)
                 .filter(item -> !existing.add(mapper.apply(item)))
-                .collect(Collectors.toList()));
+                .toList());
     }
 
     public static <T> T getDistinct(List<T> lista1, List<T> lista2) {

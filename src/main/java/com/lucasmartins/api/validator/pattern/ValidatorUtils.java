@@ -5,10 +5,13 @@ import com.lucasmartins.common.exception.enums.EnumDomainException;
 import com.lucasmartins.common.pattern.enums.EnumDateFormat;
 import com.lucasmartins.common.utils.DateUtil;
 import com.lucasmartins.common.utils.NumericUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidatorUtils {
 
     public static void validateGreaterThenZero(Number number, String name) {

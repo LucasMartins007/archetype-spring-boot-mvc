@@ -110,7 +110,7 @@ public class ClassUtil {
     }
 
     public static Method parseHandlerToMethod(Object handler) {
-        return handler instanceof HandlerMethod ? ((HandlerMethod) handler).getMethod() : null;
+        return handler instanceof HandlerMethod handlerMethod  ? handlerMethod.getMethod() : null;
     }
 
     @SuppressWarnings("unchecked")
