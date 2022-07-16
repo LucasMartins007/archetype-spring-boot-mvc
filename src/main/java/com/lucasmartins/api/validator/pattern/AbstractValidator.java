@@ -1,6 +1,7 @@
 package com.lucasmartins.api.validator.pattern;
 
 import com.lucasmartins.api.config.context.IContext;
+import com.lucasmartins.api.service.pattern.IAbstractService;
 import com.lucasmartins.common.exception.DomainRuntimeException;
 import com.lucasmartins.common.exception.enums.EnumDomainException;
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
@@ -28,7 +29,7 @@ public abstract class AbstractValidator<T extends AbstractEntity<?>> implements 
         return getContext().getBean(classRespository);
     }
 
-    public <R extends IAbstractService<T, ?, ?>> R getService(Class<R> classService) {
+    public <R extends IAbstractService<T, ?>> R getService(Class<R> classService) {
         return getContext().getBean(classService);
     }
 
