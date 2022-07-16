@@ -1,7 +1,6 @@
 package com.lucasmartins.common.model.entity.pattern;
 
 import com.lucasmartins.common.pattern.IIdentifier;
-import org.hibernate.proxy.HibernateProxyHelper;
 
 import javax.persistence.MappedSuperclass;
 
@@ -17,11 +16,6 @@ public abstract class AbstractEntity<T extends Number> implements IIdentifier<T>
     @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         if (obj == null) {
-            return false;
-        }
-
-        final Class<?> objClass = HibernateProxyHelper.getClassWithoutInitializingProxy(obj);
-        if (getClass() != objClass) {
             return false;
         }
 

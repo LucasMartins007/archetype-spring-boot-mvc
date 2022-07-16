@@ -1,4 +1,4 @@
-package com.lucasmartins.api.service.pattern;
+package com.lucasmartins.api.validator.pattern.service.pattern;
 
 import com.lucasmartins.api.config.context.IContext;
 import com.lucasmartins.common.exception.DomainRuntimeException;
@@ -15,7 +15,7 @@ public abstract class AbstractService<E extends AbstractEntity<?>, I extends Num
     private final Class<E> entityClass;
 
     @SuppressWarnings("unchecked")
-    protected AbstractService(Class<E> entityClass) {
+    protected AbstractService() {
         Type[] actualTypeArguments = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
         this.entityClass = (Class<E>) actualTypeArguments[0];
     }

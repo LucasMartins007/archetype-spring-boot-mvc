@@ -13,14 +13,16 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @param <D>
- * @param <E>
- * @author lucas
+ * Class responsible for convert DTO classes to Entity classes,
+ * and vice versa.
+ *
+ * @param <D> DTO to be converted
+ * @param <E> Entity to be converted
  */
+@SuppressWarnings("unchecked")
 public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
 
     private final Class<D> dtoClass;
@@ -54,7 +56,9 @@ public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
     }
 
     public static <D extends AbstractDTO<?>, E extends AbstractEntity<?>> List<E> converterDTOParaEntity(List<D> dtos, Class<E> clazzEntity) {
-        return dtos.stream().map(dto -> (E) converter(dto, clazzEntity)).collect(Collectors.toList());
+        return ListUtil.stream(dtos)
+                .map(dto -> (E) converter(dto, clazzEntity))
+                .toList();
     }
 
     public static <D extends AbstractDTO<?>, E extends AbstractEntity<?>> D converterEntityParaDTO(E entity, Class<D> clazzDto) {
@@ -62,7 +66,9 @@ public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
     }
 
     public static <D extends AbstractDTO<?>, E extends AbstractEntity<?>> List<D> converterEntityParaDTO(List<E> entitys, Class<D> clazzDto) {
-        return entitys.stream().map(entity -> (D) converter(entity, clazzDto)).collect(Collectors.toList());
+        return ListUtil.stream(entitys)
+                .map(entity -> (D) converter(entity, clazzDto))
+                .toList();
     }
 
     private static Object converter(Object objectOrigem, Class<?> classDestino) {
@@ -93,13 +99,12 @@ public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
                 }
             });
 
-            return popular(toMapPopulateObjectDesino, classDestino);
+            return populate(toMapPopulateObjectDesino, classDestino);
         } catch (Exception ex) {
             throw new DomainRuntimeException(ex.getMessage(), ex);
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static Object getValueFieldTypeDTO(Object valueFieldOrigem, Field field) {
         try {
             if (valueFieldOrigem == null) {
@@ -119,9 +124,9 @@ public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
             if (Collection.class.isAssignableFrom(clazzValue) && Collection.class.isAssignableFrom(clazzField)) {
                 final Class<?> classFieldTypeCollection = ClassUtil.getClassParameterizedTypeField(field);
                 if (IIdentifier.class.isAssignableFrom(classFieldTypeCollection)) {
-                    return ((Collection) valueFieldOrigem).stream()
+                    return ListUtil.stream((Collection<?>) valueFieldOrigem)
                             .map(value -> converter(value, classFieldTypeCollection, Collections.emptyList()))
-                            .collect(Collectors.toList());
+                            .toList();
                 }
             }
 
@@ -140,9 +145,10 @@ public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
         addIfNotExistsFieldModifier(fieldsDestino, Arrays.asList(classDestino.getDeclaredFields()));
         addIfNotExistsFieldModifier(fieldsDestino, Arrays.asList(classDestino.getSuperclass().getDeclaredFields()));
 
-        List<Field> fieldsEqualsOrigiDest = fieldsOrigem.stream()
-                .flatMap(fo -> fieldsDestino.stream().filter(fd -> fd.getName().equalsIgnoreCase(fo.getName())))
-                .collect(Collectors.toList());
+        List<Field> fieldsEqualsOrigiDest = ListUtil.stream(fieldsOrigem)
+                .flatMap(fo -> ListUtil.stream(fieldsDestino)
+                        .filter(fd -> fd.getName().equalsIgnoreCase(fo.getName())))
+                .toList();
 
         final List<Field> fields = new ArrayList<>();
 
@@ -203,12 +209,13 @@ public class Converter<D extends AbstractDTO<?>, E extends AbstractEntity<?>> {
         return value;
     }
 
-    private static Object popular(Map<String, ?> propertiesToMap, Class<?> classDestino) {
+    private static Object populate(Map<String, ?> propertiesToMap, Class<?> classDestino) {
         try {
             Object instanceObjectDestino = classDestino.getDeclaredConstructor().newInstance();
             BeanUtilsBean.getInstance().populate(instanceObjectDestino, propertiesToMap);
             return instanceObjectDestino;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException ex) {
             throw new DomainRuntimeException(ex.getMessage(), ex);
         }
     }

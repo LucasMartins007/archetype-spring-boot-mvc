@@ -25,7 +25,8 @@ public enum EnumDomainException implements IDomainException {
 
     INITIAL_DATE_GREATER_THAN_FINAL_DATE("A data inicial {0} não pode ser maior que a data final {1}."),
     DATE_BEFORE_THAN_CURRENT_DATE("A {0} {1} não pode ser menor que a data atual."),
-    DATE_AFTER_THAN_CURRENT_DATE("A {0} {1} não pode ser maior que a data atual."), ENUM_NOT_FOUND();
+    DATE_AFTER_THAN_CURRENT_DATE("A {0} {1} não pode ser maior que a data atual."),
+    ENUM_NOT_FOUND("Enumerador não encontrado: {0}");
 
     private final String message;
 

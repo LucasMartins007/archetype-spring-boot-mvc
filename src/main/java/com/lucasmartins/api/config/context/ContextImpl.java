@@ -23,8 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.lucasmartins.common.utils.optional.OptionalUtil.ofNullable;
-
+@SuppressWarnings("unchecked")
 @Configuration
 public class ContextImpl implements ApplicationContextAware, IContext {
 
@@ -94,9 +93,8 @@ public class ContextImpl implements ApplicationContextAware, IContext {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends AbstractEntity<?>, I extends Serializable> JpaRepository<T, I> getRepositoryFromClass(Class<T> domainClass) {
-        return (JpaRepository<T, I>) ofNullable(repositories.getRepositoryFor(domainClass))
+        return (JpaRepository<T, I>) repositories.getRepositoryFor(domainClass)
                 .orElseThrow(() -> new DomainRuntimeException(
                         EnumDomainException.REPOSITORY_NOT_FOUND,
                         JpaRepository.class.getSimpleName(),
@@ -104,9 +102,8 @@ public class ContextImpl implements ApplicationContextAware, IContext {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends AbstractEntity<?>> JpaSpecificationExecutor<T> getSpecRepositoryFromClass(Class<T> domainClass) {
-        return (JpaSpecificationExecutor<T>) ofNullable(repositories.getRepositoryFor(domainClass))
+        return (JpaSpecificationExecutor<T>) repositories.getRepositoryFor(domainClass)
                 .orElseThrow(() -> new DomainRuntimeException(
                         EnumDomainException.REPOSITORY_NOT_FOUND,
                         JpaRepository.class.getSimpleName(),

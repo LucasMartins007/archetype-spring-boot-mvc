@@ -23,13 +23,13 @@ import java.util.stream.Stream;
  *
  * @author lucas
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class BeanInvokeDynamic {
     
     
     private static final Pattern FIELD_SEPARATOR = Pattern.compile("\\.");
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-    private static final ClassValue<Map<String, Function>> CACHE = new ClassValue<Map<String, Function>>() {
+    private static final ClassValue<Map<String, Function>> CACHE = new ClassValue<>() {
         @Override
         protected Map<String, Function> computeValue(Class<?> type) {
             return new ConcurrentHashMap<>();
@@ -68,7 +68,6 @@ public class BeanInvokeDynamic {
         return createAndCacheFunction(javaBeanClass, fieldName);
     }
 
-    @SuppressWarnings("unchecked")
     private static Function createAndCacheFunction(Class<?> javaBeanClass, String path) {
         return cacheAndGetFunction(path, javaBeanClass,
                 createFunctions(javaBeanClass, path)
@@ -87,7 +86,7 @@ public class BeanInvokeDynamic {
         List<Function> functions = new ArrayList<>();
         Stream.of(FIELD_SEPARATOR.split(path))
                 .reduce(javaBeanClass, (nestedJavaBeanClass, fieldName) -> {
-                    Tuple2<? extends Class, Function> getFunction = createFunction(fieldName, nestedJavaBeanClass);
+                    var getFunction = createFunction(fieldName, nestedJavaBeanClass);
                     functions.add(getFunction._2);
                     return getFunction._1;
                 }, (previousClass, nextClass) -> nextClass);
@@ -95,7 +94,7 @@ public class BeanInvokeDynamic {
         return functions;
     }
 
-    private static Tuple2<? extends Class, Function> createFunction(String fieldName, Class<?> javaBeanClass) {
+    private static Tuple2<Class, Function> createFunction(String fieldName, Class<?> javaBeanClass) {
         return Stream.of(javaBeanClass.getDeclaredMethods())
                 .filter(BeanInvokeDynamic::isGetterMethod)
                 .filter(method -> StringUtils.endsWithIgnoreCase(method.getName(), fieldName))
@@ -112,7 +111,7 @@ public class BeanInvokeDynamic {
                 && !method.getName().endsWith("Class");
     }
 
-    private static Tuple2<? extends Class, Function> createTupleWithReturnTypeAndGetter(Method getterMethod) {
+    private static Tuple2<Class, Function> createTupleWithReturnTypeAndGetter(Method getterMethod) {
         try {
             return Tuple.of(
                     getterMethod.getReturnType(),

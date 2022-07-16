@@ -1,19 +1,18 @@
 package com.lucasmartins.common.exception;
 
 import com.lucasmartins.common.exception.pattern.IDomainException;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class DomainRuntimeException extends RuntimeException {
 
     private final List<String> details = new ArrayList<>();
-
-    public DomainRuntimeException() {
-    }
 
     public DomainRuntimeException(String message) {
         super(message);

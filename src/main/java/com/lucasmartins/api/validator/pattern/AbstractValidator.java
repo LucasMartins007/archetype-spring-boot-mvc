@@ -1,7 +1,7 @@
 package com.lucasmartins.api.validator.pattern;
 
 import com.lucasmartins.api.config.context.IContext;
-import com.lucasmartins.api.service.pattern.IAbstractService;
+import com.lucasmartins.api.validator.pattern.service.pattern.IAbstractService;
 import com.lucasmartins.common.exception.DomainRuntimeException;
 import com.lucasmartins.common.exception.enums.EnumDomainException;
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
@@ -48,15 +48,13 @@ public abstract class AbstractValidator<T extends AbstractEntity<?>> implements 
     }
 
     @SuppressWarnings("unchecked")
-    private Class<T> resolveClass(Class<T> clazzType) {
-        if (entityClass == null) {
-            if (clazzType == null) {
-                entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            } else {
-                entityClass = clazzType;
-            }
+    private void resolveClass(Class<T> clazzType) {
+        if (entityClass != null) {
+            return;
         }
-        return entityClass;
+        entityClass = clazzType == null
+                ? (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
+                : clazzType;
     }
 
 }

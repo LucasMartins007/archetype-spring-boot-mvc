@@ -1,10 +1,9 @@
-package com.lucasmartins.api.service.pattern;
+package com.lucasmartins.api.validator.pattern.service.pattern;
 
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
