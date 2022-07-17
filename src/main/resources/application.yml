@@ -1,0 +1,21 @@
+app:
+    name: archetype
+    version: 1.0
+
+api:
+    app-name: ${app.name}
+    base-path: /${api.app-name}${api.path}${api.version}
+    path: /api
+    version: /v1
+
+server:
+    servlet:
+        contextPath: ${api.base-path}
+
+swagger:
+    contact-email: lucasrodriguesmartinsoliveira@gmail.com
+    contact-name: Lucas Martins
+    contact-url: https://github.com/LucasMartins007
+    description: Archetype for projects using Spring MVC
+    title: MVC Spring Archetype
+    version: 1.0
