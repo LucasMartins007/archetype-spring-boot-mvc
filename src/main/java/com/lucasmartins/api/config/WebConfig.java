@@ -12,6 +12,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public HandlerInterceptor appAuthorizationHandler(){
+    public HandlerInterceptor authorizationHandler(){
         return new AuthorizationHandler();
     }
 
@@ -41,6 +43,21 @@ public class WebConfig extends WebMvcConfigurationSupport {
         converters.add(jsonConverter);
 
         addDefaultHttpMessageConverters(converters);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger-ui/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
+                .resourceChain(false);
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthorizationHandler());
     }
 
 }
