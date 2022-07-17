@@ -27,7 +27,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
         
-    - name: Buil artifact
+    - name: Build artifact
       run: mvn clean install
       
     - name: Generate archetype
