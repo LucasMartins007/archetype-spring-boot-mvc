@@ -1,14 +1,20 @@
-package com.lucasmartins.api.validator.pattern.service.pattern;
+package com.lucasmartins.api.service.pattern;
 
 import com.lucasmartins.api.config.context.IContext;
 import com.lucasmartins.common.exception.DomainRuntimeException;
 import com.lucasmartins.common.exception.enums.EnumDomainException;
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
+import com.lucasmartins.common.utils.Utils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.Repository;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 public abstract class AbstractService<E extends AbstractEntity<?>, I extends Number> implements IAbstractService<E, I> {
 
@@ -49,5 +55,18 @@ public abstract class AbstractService<E extends AbstractEntity<?>, I extends Num
         return getRepository()
                 .findById(id)
                 .orElseThrow(() -> new DomainRuntimeException(EnumDomainException.ENTITY_NOT_FOUND, entityClass.getSimpleName(), id));
+    }
+
+    @Override
+    public List<E> findAll() {
+        return getRepository().findAll();
+    }
+
+    @Override
+    public Page<E> findAll(Pageable pageable) {
+        if (Utils.isEmpty(pageable.getSort())) {
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.unsorted());
+        }
+        return getRepository().findAll(pageable);
     }
 }

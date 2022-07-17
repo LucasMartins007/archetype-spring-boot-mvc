@@ -1,4 +1,4 @@
-package com.lucasmartins.api.validator.pattern.service.pattern;
+package com.lucasmartins.api.service.pattern;
 
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
 import org.springframework.data.domain.Page;
@@ -15,8 +15,6 @@ public interface IAbstractService<E extends AbstractEntity<?>, I extends Number>
     <R extends Repository<?,?>> R getRepository(Class<R> classRespository);
 
     <R extends IAbstractService<?, ?>> R getService(Class<R> classService);
-
-    E findById(I id);
 
     List<E> findAll();
 
