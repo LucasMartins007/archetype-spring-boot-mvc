@@ -2,7 +2,7 @@ package com.lucasmartins.api.controller.pattern;
 
 import com.lucasmartins.api.config.context.IContext;
 import com.lucasmartins.api.converter.Converter;
-import com.lucasmartins.api.validator.pattern.service.pattern.AbstractService;
+import com.lucasmartins.api.service.pattern.IAbstractService;
 import com.lucasmartins.common.model.dto.pattern.AbstractDTO;
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <S> Service class referring to the Controller's responsibility entity
  */
-public abstract class AbstractController<S extends AbstractService<?, ?>> {
+public abstract class AbstractController<S extends IAbstractService<?, ?>> {
 
     private final Class<S> serviceClass;
 
