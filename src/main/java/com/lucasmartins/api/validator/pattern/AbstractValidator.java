@@ -1,7 +1,7 @@
 package com.lucasmartins.api.validator.pattern;
 
 import com.lucasmartins.api.config.context.IContext;
-import com.lucasmartins.api.validator.pattern.service.pattern.IAbstractService;
+import com.lucasmartins.api.service.pattern.IAbstractService;
 import com.lucasmartins.common.exception.DomainRuntimeException;
 import com.lucasmartins.common.exception.enums.EnumDomainException;
 import com.lucasmartins.common.model.entity.pattern.AbstractEntity;

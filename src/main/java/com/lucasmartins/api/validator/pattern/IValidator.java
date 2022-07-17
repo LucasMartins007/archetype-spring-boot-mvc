@@ -1,6 +1,8 @@
 package com.lucasmartins.api.validator.pattern;
 
-public interface IValidator<E> {
+import com.lucasmartins.common.model.entity.pattern.AbstractEntity;
+
+public interface IValidator<E extends AbstractEntity<?>> {
 
     default void validateRequiredFields(E entity) {
     }
