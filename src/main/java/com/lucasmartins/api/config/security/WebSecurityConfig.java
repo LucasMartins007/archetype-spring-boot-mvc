@@ -38,14 +38,12 @@ public class WebSecurityConfig {
             "/example");
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> auth
                         .antMatchers(ListUtil.toArray(NO_SECURED_URLS))
                         .permitAll()
                         .antMatchers(prefixPath)
                         .authenticated()
-                        .anyRequest()
-                        .denyAll()
                 )
                 .formLogin()
                 .disable()
